@@ -7,29 +7,86 @@ public class Main {
 
         Scanner sc = new Scanner(System.in);
 
-        int n = sc.nextInt();
+        System.out.println("Please, enter the secret code's length:");
 
-        if (n > 10) {
-            System.out.println("Error: can't generate a secret number with a length of" + n
-                    + " because there aren't enough unique digits.");
-        } else {
+        int n;
+        while (true) {
 
-            String randomNumber = "";
+            n = sc.nextInt();
 
-            while (randomNumber.length() < n) {
+            if (n <= 10) {
+                break;
+            } else {
+                System.out.println("Error: can't generate a secret number with a length of" + n
+                        + " because there aren't enough unique digits.");
+                System.out.println("Please enter the length again:");
+            }
+        }
 
-                String rand = String.valueOf(System.nanoTime());
+        sc.nextLine();
 
-                for (int i = 0; i < rand.length(); i++) {
+        String secretCode = generateRandomNumber(n);
 
-                    if (randomNumber.length() < n && !randomNumber.contains(String.valueOf(rand.charAt(i)))) {
+        System.out.println("Okay, let's start a game!");
 
-                        randomNumber += rand.charAt(i);
-                    }
+        int turn = 1;
+
+        while (true) {
+
+            int bulls = 0;
+            int cows = 0;
+
+            System.out.println("Turn " + turn++ + ":");
+
+            String userCode = sc.nextLine();
+
+            if (userCode.equals(secretCode)) {
+                System.out.println("Grade: " + n + " bulls");
+                break;
+            }
+
+            for (int i = 0; i < secretCode.length(); i++) {
+
+                if (secretCode.charAt(i) == userCode.charAt(i)) {
+                    bulls++;
+                } else if (secretCode.contains(String.valueOf(userCode.charAt(i)))) {
+                    cows++;
                 }
             }
-            System.out.println("The random secret number is " + randomNumber + ".");
+
+            String bullsStr = bulls > 1 ? "bulls" : "bull";
+            String cowsStr = cows > 1 ? "cows" : "cow";
+
+            if (bulls == 0 && cows == 0) {
+                System.out.println("Grade: None.");
+            } else if (bulls > 0 && cows == 0) {
+                System.out.println("Grade: " + bulls + " " + bullsStr);
+            } else if (cows > 0 && bulls == 0) {
+                System.out.println("Grade: " + cows + " " + cowsStr);
+            } else if (cows > 0 && bulls > 0) {
+                System.out.println("Grade: " + bulls + " " + bullsStr + " and " + cows + " " + cowsStr);
+            }
         }
+        System.out.println("Congratulations! You guessed the secret code.");
+    }
+
+    private static String generateRandomNumber(int length) {
+
+        String randomNumber = "";
+
+        while (randomNumber.length() < length) {
+
+            String rand = String.valueOf(System.nanoTime());
+
+            for (int i = 0; i < rand.length(); i++) {
+
+                if (randomNumber.length() < length && !randomNumber.contains(String.valueOf(rand.charAt(i)))) {
+
+                    randomNumber += rand.charAt(i);
+                }
+            }
+        }
+        return randomNumber;
     }
 }
 
@@ -38,24 +95,4 @@ public class Main {
 //        int bulls = 0;
 //
 //        Scanner sc = new Scanner(System.in);
-//
-//        String userCode = sc.nextLine();
-//
-//        for (int i = 0; i < 4; i++) {
-//
-//            if (preCode.charAt(i) == userCode.charAt(i)) {
-//                bulls++;
-//            } else if (preCode.contains(String.valueOf(userCode.charAt(i)))) {
-//                cows++;
-//            }
-//        }
-//
-//        if (bulls == 0 && cows == 0) {
-//            System.out.println("Grade: None. The secret code is " + preCode + ".");
-//        } else if (bulls > 0 && cows == 0) {
-//            System.out.println("Grade: " + bulls + " bull(s). The secret code is " + preCode + ".");
-//        } else if (cows > 0 && bulls == 0) {
-//            System.out.println("Grade: " + cows + " cow(s). The secret code is " + preCode + ".");
-//        } else if (cows > 0 && bulls > 0) {
-//            System.out.println("Grade: " + bulls + " bull(s) and " + cows + " cow(s). The secret code is " + preCode + ".");
-//        }
+//   }
