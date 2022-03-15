@@ -2,67 +2,60 @@ package bullscows;
 
 import java.util.Scanner;
 
-class Grade {
-    int bulls;
-    int cows;
-
-    Grade(int bulls, int cows) {
-        this.bulls = bulls;
-        this.cows = cows;
-    }
-}
-
-class Game {
-    String secret = "9305";
-
-    private static String getGuess() {
-        Scanner scanner = new Scanner(System.in);
-        return scanner.next();
-    }
-
-    Grade getGrade(String guess) {
-        int bulls = 0;
-        int cows = 0;
-
-        for (int i = 0; i < guess.length(); i++) {
-            if (guess.charAt(i) == this.secret.charAt(i)) {
-                bulls += 1;
-            } else if (this.secret.indexOf(guess.charAt(i)) != -1) {
-                cows += 1;
-            }
-        }
-
-        return new Grade(bulls, cows);
-    }
-
-    private void printGrade(Grade grade) {
-        String gradeString;
-
-        if (grade.bulls != 0 && grade.cows != 0) {
-            gradeString = String.format("%d bull(s) and %d cow(s)", grade.bulls, grade.cows);
-        } else if (grade.bulls != 0) {
-            gradeString = String.format("%d bull(s)", grade.bulls);
-        } else if (grade.cows != 0) {
-            gradeString = String.format("%d cow(s)", grade.cows);
-        } else {
-            gradeString = "None";
-        }
-
-        System.out.printf("Grade: %s. The secret code is %s.", gradeString, this.secret);
-        System.out.println();
-    }
-
-    void play() {
-        String guess = getGuess();
-        Grade grade = getGrade(guess);
-        printGrade(grade);
-    }
-}
-
 public class Main {
     public static void main(String[] args) {
-        Game game = new Game();
-        game.play();
+
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt();
+
+        if (n > 10) {
+            System.out.println("Error: can't generate a secret number with a length of" + n
+                    + " because there aren't enough unique digits.");
+        } else {
+
+            String randomNumber = "";
+
+            while (randomNumber.length() < n) {
+
+                String rand = String.valueOf(System.nanoTime());
+
+                for (int i = 0; i < rand.length(); i++) {
+
+                    if (randomNumber.length() < n && !randomNumber.contains(String.valueOf(rand.charAt(i)))) {
+
+                        randomNumber += rand.charAt(i);
+                    }
+                }
+            }
+            System.out.println("The random secret number is " + randomNumber + ".");
+        }
     }
 }
 
+//        String preCode = "9305";
+//        int cows = 0;
+//        int bulls = 0;
+//
+//        Scanner sc = new Scanner(System.in);
+//
+//        String userCode = sc.nextLine();
+//
+//        for (int i = 0; i < 4; i++) {
+//
+//            if (preCode.charAt(i) == userCode.charAt(i)) {
+//                bulls++;
+//            } else if (preCode.contains(String.valueOf(userCode.charAt(i)))) {
+//                cows++;
+//            }
+//        }
+//
+//        if (bulls == 0 && cows == 0) {
+//            System.out.println("Grade: None. The secret code is " + preCode + ".");
+//        } else if (bulls > 0 && cows == 0) {
+//            System.out.println("Grade: " + bulls + " bull(s). The secret code is " + preCode + ".");
+//        } else if (cows > 0 && bulls == 0) {
+//            System.out.println("Grade: " + cows + " cow(s). The secret code is " + preCode + ".");
+//        } else if (cows > 0 && bulls > 0) {
+//            System.out.println("Grade: " + bulls + " bull(s) and " + cows + " cow(s). The secret code is " + preCode + ".");
+//        }
