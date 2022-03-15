@@ -1,5 +1,6 @@
 package bullscows;
 
+import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
@@ -73,19 +74,18 @@ public class Main {
     private static String generateRandomNumber(int length) {
 
         String randomNumber = "";
+        Random r = new Random();
 
         while (randomNumber.length() < length) {
 
-            String rand = String.valueOf(System.nanoTime());
+            int temp = r.nextInt(9 - 0 + 1) + 0;
 
-            for (int i = 0; i < rand.length(); i++) {
+            if (randomNumber.length() < length && !randomNumber.contains(String.valueOf(temp))) {
 
-                if (randomNumber.length() < length && !randomNumber.contains(String.valueOf(rand.charAt(i)))) {
-
-                    randomNumber += rand.charAt(i);
-                }
+                randomNumber += String.valueOf(temp);
             }
         }
+        System.out.println(randomNumber);
         return randomNumber;
     }
 }
@@ -95,4 +95,4 @@ public class Main {
 //        int bulls = 0;
 //
 //        Scanner sc = new Scanner(System.in);
-//   }
+//
